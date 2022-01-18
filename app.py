@@ -1,9 +1,10 @@
 from flask import Flask, render_template, request, redirect, url_for, flash, jsonify
 from minio import Minio
+from dotenv import load_dotenv
 import os
 
-# load_dotenv()
-# os.getenv("MONGO_URI")
+load_dotenv()
+
 
 LOCAL_FILE_PATH = os.environ.get('LOCAL_FILE_PATH')
 ACCESS_KEY = os.environ.get('ACCESS_KEY')
