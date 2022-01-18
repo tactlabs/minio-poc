@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MINIO FLASK</title>
+</head>
+<body>
+    {% if images %}
+     
+        {% for image in images %}
+
+        <p>URL : {{ image }}</p>
+
+        <img src="{{ image }}" height="350px">
+
+        {% endfor %}
+
+    {% endif %}
+
+    {% if videos %} 
+
+       {% for video in videos %}
+
+        <p>URL : {{ video }}</p>
+
+       <video height="350px" width="320" controls> 
+           <source src="{{ video }}" type="video/mp4"> 
+       </video>
+
+       {% endfor %}
+
+    {% endif %}
+</body>
+</html>
