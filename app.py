@@ -2,15 +2,19 @@ from flask import Flask, render_template, request, redirect, url_for, flash, jso
 from minio import Minio
 import os
 
+LOCAL_FILE_PATH = os.environ.get('LOCAL_FILE_PATH')
+ACCESS_KEY = os.environ.get('ACCESS_KEY')
+SECRET_KEY = os.environ.get('SECRET_KEY')
+
 MINIO_API_HOST = "http://localhost:9000"
 
 MINIO_CLIENT = Minio(
-        "localhost:9000", access_key="ram", secret_key="12345678", secure=False   
+        "localhost:9000", access_key=ACCESS_KEY, secret_key=SECRET_KEY, secure=False   
     )
 
 BUCKET_NAME = "first"
 
-LOCAL_FILE_PATH = os.environ.get('LOCAL_FILE_PATH')
+
 
 app = Flask(__name__)
 
