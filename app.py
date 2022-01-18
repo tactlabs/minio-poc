@@ -1,5 +1,6 @@
 from flask import Flask, render_template, request, redirect, url_for, flash, jsonify
 from minio import Minio
+import os
 
 MINIO_API_HOST = "http://localhost:9000"
 
@@ -8,6 +9,8 @@ MINIO_CLIENT = Minio(
     )
 
 BUCKET_NAME = "first"
+
+LOCAL_FILE_PATH = os.environ.get('LOCAL_FILE_PATH')
 
 app = Flask(__name__)
 
@@ -60,10 +63,10 @@ def main():
     # Upload '/home/ramanathan/Downloads/bbb.jpg' as object name
     # 'bbb.jpg' to bucket 'first'.
     MINIO_CLIENT.fput_object(
-        "first", "desk.mp4", "/home/ramanathan/Downloads/desk.mp4", 
+        "first", "desk.mp4", LOCAL_FILE_PATH, 
     )
     print(
-        "'/home/ramanathan/Downloads/bbb.jpg' is successfully uploaded as "
+       "It is successfully uploaded as "
         "object 'bbb.jpg' to bucket 'first'."
     )
 
