@@ -56,7 +56,7 @@ def index():
     else:
         print("Bucket 'first' already exists")
 
-    MINIO_CLIENT.fput_object("first", "pic.jpg", LOCAL_FILE_PATH,)
+    MINIO_CLIENT.fput_object("first", "abc.jpeg", LOCAL_FILE_PATH,)
     
     print("It is successfully uploaded")
 
