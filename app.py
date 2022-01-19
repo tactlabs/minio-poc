@@ -62,7 +62,7 @@ def main():
         print("Bucket 'first' already exists")
 
     MINIO_CLIENT.fput_object(
-        "first", "desk.jpg", LOCAL_FILE_PATH, 
+        "first", "pic.jpg", LOCAL_FILE_PATH, 
     )
     print(
        "It is successfully uploaded as "
