@@ -48,7 +48,7 @@ def get_all_videos():
 
 @app.route('/', methods = ['GET', 'POST'])
 def index():
-    
+
     found = MINIO_CLIENT.bucket_exists("first")
 
     if not found:
@@ -56,7 +56,7 @@ def index():
     else:
         print("Bucket 'first' already exists")
 
-    MINIO_CLIENT.fput_object("first", "abc.jpeg", LOCAL_FILE_PATH,)
+    MINIO_CLIENT.fput_object("first", "abc.jpg", LOCAL_FILE_PATH,)
     
     print("It is successfully uploaded")
 
