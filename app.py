@@ -9,9 +9,9 @@ LOCAL_FILE_PATH = os.environ.get('LOCAL_FILE_PATH')
 ACCESS_KEY      = os.environ.get('ACCESS_KEY')
 SECRET_KEY      = os.environ.get('SECRET_KEY')
 
-MINIO_API_HOST = "http://localhost:9000"
+MINIO_API_HOST = "http://18.140.3.201:9000"
 
-MINIO_CLIENT = Minio("localhost:9000", access_key=ACCESS_KEY, secret_key=SECRET_KEY, secure=False)
+MINIO_CLIENT = Minio("18.140.3.201:9000", access_key=ACCESS_KEY, secret_key=SECRET_KEY, secure=False)
 
 BUCKET_NAME = "first"
 
