@@ -1,6 +1,7 @@
 from flask import Flask, render_template, request, redirect, url_for, flash, jsonify
-from minio import Minio
+from werkzeug.utils import secure_filename
 from dotenv import load_dotenv
+from minio import Minio
 import os
 
 load_dotenv()
@@ -65,6 +66,22 @@ def index():
     all_videos = get_all_videos()
 
     return render_template('index.html', images = all_images, videos =all_videos)
+
+
+@app.route('/upload')
+def upload_file():
+    return render_template('upload.html')
+	
+# api to handle uploaded file
+@app.route('/api/upload', methods = ['GET', 'POST'])
+def save_file():
+    if request.method == 'POST':
+        file = request.files['file']
+        file_name = file
+        file.save(secure_filename(file.filename))
+        res = upload_file_handler(f"{file.filename}", file.filename)
+        
+        return render_template('index1.html',file_name = file.filename)
 
 if __name__ == "__main__":
     
