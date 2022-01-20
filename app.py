@@ -6,9 +6,11 @@ import os
 
 load_dotenv()
 
-LOCAL_FILE_PATH = os.environ.get('LOCAL_FILE_PATH')
+# LOCAL_FILE_PATH = os.environ.get('LOCAL_FILE_PATH')
 ACCESS_KEY      = os.environ.get('ACCESS_KEY')
 SECRET_KEY      = os.environ.get('SECRET_KEY')
+
+app = Flask(__name__)
 
 MINIO_API_HOST = "http://localhost:9000"
 
@@ -16,7 +18,9 @@ MINIO_CLIENT = Minio("localhost:9000", access_key=ACCESS_KEY, secret_key=SECRET_
 
 BUCKET_NAME = "first"
 
-app = Flask(__name__)
+UPLOAD_PATH = "data/"
+
+app.config['UPLOAD_FOLDER'] = UPLOAD_PATH
 
 def get_all_images():
 
@@ -47,8 +51,21 @@ def get_all_videos():
     print(videos)
     return videos
 
-@app.route('/', methods = ['GET', 'POST'])
+@app.route('/')
 def index():
+    return render_template('upload.html')
+
+@app.route('/', methods = ['GET', 'POST'])
+def upload_files():
+    uploaded_file = request.files['file']
+    global filename
+    filename = secure_filename(uploaded_file.filename)
+    if filename != '':
+        file_ext = os.path.splitext(filename)[1]
+        uploaded_file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+
+    global LOCAL_FILE_PATH
+    LOCAL_FILE_PATH = os.path.join(app.config['UPLOAD_FOLDER'], filename)
 
     found = MINIO_CLIENT.bucket_exists("first")
 
@@ -57,7 +74,7 @@ def index():
     else:
         print("Bucket already exists")
 
-    MINIO_CLIENT.fput_object("first", "pic.jpg", LOCAL_FILE_PATH,)
+    MINIO_CLIENT.fput_object("first", filename,LOCAL_FILE_PATH,)
     
     print("It is successfully uploaded")
 
@@ -67,21 +84,40 @@ def index():
 
     return render_template('index.html', images = all_images, videos =all_videos)
 
+# def upload_in_bucket():
 
-@app.route('/upload')
-def upload_file():
-    return render_template('upload.html')
+#     found = MINIO_CLIENT.bucket_exists("first")
+
+#     if not found:
+#         MINIO_CLIENT.make_bucket("first")
+#     else:
+#         print("Bucket already exists")
+
+#     MINIO_CLIENT.fput_object("first", "pic.jpg",LOCAL_FILE_PATH,)
+    
+#     print("It is successfully uploaded")
+
+#     all_images = get_all_images()
+
+#     all_videos = get_all_videos()
+
+#     return render_template('index.html', images = all_images, videos =all_videos)
+
+
+# @app.route('/upload')
+# def upload_file():
+#     return render_template('upload.html')
 	
-# api to handle uploaded file
-@app.route('/api/upload', methods = ['GET', 'POST'])
-def save_file():
-    if request.method == 'POST':
-        file = request.files['file']
-        file_name = file
-        file.save(secure_filename(file.filename))
-        res = upload_file_handler(f"{file.filename}", file.filename)
+# # api to handle uploaded file
+# @app.route('/api/upload', methods = ['GET', 'POST'])
+# def save_file():
+#     if request.method == 'POST':
+#         file = request.files['file']
+#         file_name = file
+#         file.save(secure_filename(file.filename))
+#         res = upload_file_handler(f"{file.filename}", file.filename)
         
-        return render_template('index1.html',file_name = file.filename)
+#         return render_template('index1.html',file_name = file.filename)
 
 if __name__ == "__main__":
     
