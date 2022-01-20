@@ -12,9 +12,9 @@ SECRET_KEY      = os.environ.get('SECRET_KEY')
 
 app = Flask(__name__)
 
-MINIO_API_HOST = "http://localhost:9000"
+MINIO_API_HOST = "http://" + os.environ.get('PUB_IP_ADDRESS') + ":9000"
 
-MINIO_CLIENT = Minio("localhost:9000", access_key=ACCESS_KEY, secret_key=SECRET_KEY, secure=False)
+MINIO_CLIENT = Minio(os.environ.get('PUB_IP_ADDRESS') + ":9000", access_key=ACCESS_KEY, secret_key=SECRET_KEY, secure=False)
 
 BUCKET_NAME = "first"
 
