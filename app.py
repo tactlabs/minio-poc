@@ -53,36 +53,49 @@ def get_all_videos():
 
 @app.route('/')
 def index():
-    return render_template('upload.html')
-
-@app.route('/', methods = ['GET', 'POST'])
-def upload_files():
-    uploaded_file = request.files['file']
-    global filename
-    filename = secure_filename(uploaded_file.filename)
-    if filename != '':
-        file_ext = os.path.splitext(filename)[1]
-        uploaded_file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
-
-    global LOCAL_FILE_PATH
-    LOCAL_FILE_PATH = os.path.join(app.config['UPLOAD_FOLDER'], filename)
-
-    found = MINIO_CLIENT.bucket_exists("first")
-
-    if not found:
-        MINIO_CLIENT.make_bucket("first")
-    else:
-        print("Bucket already exists")
-
-    MINIO_CLIENT.fput_object("first", filename,LOCAL_FILE_PATH,)
-    
-    print("It is successfully uploaded")
-
     all_images = get_all_images()
 
     all_videos = get_all_videos()
 
     return render_template('index.html', images = all_images, videos =all_videos)
+
+@app.route('/add', methods = ['GET', 'POST'])
+def upload_files():
+    if request.method == 'POST':
+        uploaded_file = request.files['file']
+        global filename
+        filename = secure_filename(uploaded_file.filename)
+        if filename != '':
+            file_ext = os.path.splitext(filename)[1]
+            uploaded_file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+
+        global LOCAL_FILE_PATH
+        LOCAL_FILE_PATH = os.path.join(app.config['UPLOAD_FOLDER'], filename)
+
+        found = MINIO_CLIENT.bucket_exists("first")
+
+        if not found:
+            MINIO_CLIENT.make_bucket("first")
+        else:
+            print("Bucket already exists")
+
+        MINIO_CLIENT.fput_object("first", filename,LOCAL_FILE_PATH,)
+        
+        print("It is successfully uploaded")
+
+        all_images = get_all_images()
+
+        all_videos = get_all_videos()
+
+        return render_template('index.html', images = all_images, videos =all_videos)
+
+    # all_images = get_all_images()
+
+    # all_videos = get_all_videos()
+
+    return render_template('upload.html')
+
+  
 
 # def upload_in_bucket():
 
