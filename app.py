@@ -89,48 +89,8 @@ def upload_files():
 
         return render_template('index.html', images = all_images, videos =all_videos)
 
-    # all_images = get_all_images()
-
-    # all_videos = get_all_videos()
-
     return render_template('upload.html')
 
-  
-
-# def upload_in_bucket():
-
-#     found = MINIO_CLIENT.bucket_exists("first")
-
-#     if not found:
-#         MINIO_CLIENT.make_bucket("first")
-#     else:
-#         print("Bucket already exists")
-
-#     MINIO_CLIENT.fput_object("first", "pic.jpg",LOCAL_FILE_PATH,)
-    
-#     print("It is successfully uploaded")
-
-#     all_images = get_all_images()
-
-#     all_videos = get_all_videos()
-
-#     return render_template('index.html', images = all_images, videos =all_videos)
-
-
-# @app.route('/upload')
-# def upload_file():
-#     return render_template('upload.html')
-	
-# # api to handle uploaded file
-# @app.route('/api/upload', methods = ['GET', 'POST'])
-# def save_file():
-#     if request.method == 'POST':
-#         file = request.files['file']
-#         file_name = file
-#         file.save(secure_filename(file.filename))
-#         res = upload_file_handler(f"{file.filename}", file.filename)
-        
-#         return render_template('index1.html',file_name = file.filename)
 
 if __name__ == "__main__":
     
